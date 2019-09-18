@@ -61,7 +61,7 @@ public class GuessingGame {
 				//they are correct if the copied answer is empty
 				if(answerCopy.isEmpty()) {
 					wrong = false;
-					System.out.printf("You are correct! Play again?%n");
+					System.out.printf("You are correct! Play again? (yes,no)%n");
 					String yesNo = "";
 					
 					//Only takes yes or no for an answer.
