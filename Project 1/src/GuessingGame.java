@@ -4,6 +4,7 @@ import java.util.Random;
 public class GuessingGame {
 	
 	private static int randAmnt;
+	
 	//Sets a maximum for what the numbers can range up to.
 	private static int Max = 10;
 	private static Random rand = new Random();
