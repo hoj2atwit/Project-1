@@ -1,5 +1,5 @@
 
-public class ahhh {
+public class GuessingGame {
 	
 	public static void main(String[] args) {
 		System.out.printf("Jonny Ho is a Ho%n");
