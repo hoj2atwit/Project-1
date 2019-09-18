@@ -7,6 +7,7 @@ public class GuessingGame {
 	//Sets a maximum for what the numbers can range up to.
 	private static int Max = 10;
 	private static Random rand = new Random();
+	private static LinkedBag<Integer> answer;
 	
 	//Generic main method to start program.
 	public static void main(String[] args) {
@@ -14,7 +15,6 @@ public class GuessingGame {
 	}
 	
 	//Actual game method
-	@SuppressWarnings({ "rawtypes", "unchecked"})
 	private static void gameStart() {
 		
 		//Declares Scanner for user input
@@ -31,26 +31,17 @@ public class GuessingGame {
 			//Declares random amount of numbers the game wants the user to guess.
 			randAmnt = rand.nextInt(Max) + 1;
 			
-			//Declares and sets a linked bag that holds the answer to the game.
-			LinkedBag answer = new LinkedBag();
-			//Prints the answer for testing perposes
-			System.out.printf("Answer: ");
-			for(int i = 0; i < randAmnt; i++) {
-				int numberAns = rand.nextInt(Max) + 1;
-				System.out.printf("%d ", numberAns);
-				answer.add(numberAns);
-			}
-			System.out.printf("%n");
+			setAnswerRandom();
 			
 			//Asks user for their guesses.
 			System.out.printf("Enter %d integers in the range from 1 to %d. Entries may be duplicate.%n", randAmnt, Max);
 			
 			//Creates a copy linked bag of the answer.
-			LinkedBag answerCopy = answer.copy();
+			LinkedBag<Integer> answerCopy = answer.copy();
 			
 			//Takes user guesses. Repeats if they guess incorrectly.
-			while(!guess(answer, in, firstGuess, answerCopy)) {
-				System.out.printf("%d of your guesses are correct.", (randAmnt - answerCopy.getCurrentSize())); 
+			while(!guess(in, firstGuess, answerCopy)) {
+				System.out.printf("%d of your guesses are correct.", (randAmnt - answerCopy.getCurrentSize()));
 				if (firstGuess) {
 					System.out.printf(" Guess again.%n");
 					firstGuess = false;
@@ -73,8 +64,22 @@ public class GuessingGame {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static boolean guess(LinkedBag answer, Scanner in, boolean firstGuess, LinkedBag answerCopy) {
+	
+	private static void setAnswerRandom() {
+		//Declares and sets a linked bag that holds the answer to the game.
+		answer = new LinkedBag<Integer>();
+		//Prints the answer for testing perposes
+		System.out.printf("Answer: ");
+		for(int i = 0; i < randAmnt; i++) {
+			int numberAns = rand.nextInt(Max) + 1;
+			System.out.printf("%d ", numberAns);
+			answer.add(numberAns);
+		}
+		System.out.printf("%n");
+	}
+	
+	
+	private static boolean guess(Scanner in, boolean firstGuess, LinkedBag<Integer> answerCopy) {
 		
 		//Takes in user's guesses and removes them from the copy answer.
 		for(int i = 0; i < randAmnt; i++) {
@@ -91,12 +96,15 @@ public class GuessingGame {
 		return answerCopy.isEmpty();
 	}
 	
+	
 	private static boolean tryAgain(Scanner in) {
 		System.out.printf("You are correct! Play again? (yes, no)%n");
-		String yesNo = "";
+		in.nextLine();
+		String yesNo = in.nextLine();
 		
 		//Only takes yes or no for an answer.
 		while(!yesNo.toLowerCase().equals("yes") && !yesNo.toLowerCase().equals("no")) {
+			System.out.printf("Please enter yes or no.%n");
 			yesNo = in.nextLine();
 		}
 		
