@@ -3,19 +3,27 @@ import java.util.Random;
 
 public class GuessingGame {
 	
-	private static int randAmnt;
 	
-	//Sets a maximum for what the numbers can range up to.
+	// Number determining the # of integers to guess - 1; +1 is added later on to ensure you don't have to guess 0 
+	private static int randAmnt;
+	// Sets a maximum range for the numbers to be guessed
 	private static int Max = 10;
+	// Random to be used for determining # of ints to be guessed and value of those ints
 	private static Random rand = new Random();
+	// LinkedBag to be used to contain the answers
 	private static LinkedBag<Integer> answer;
 	
-	//Generic main method to start program.
+	/**
+	 * Generic main method to start program
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		gameStart();
 	}
 	
-	//Actual game method
+	/**
+	 * Actual game method that contains all game processes
+	 */
 	private static void gameStart() {
 		
 		//Declares Scanner for user input
@@ -65,11 +73,13 @@ public class GuessingGame {
 		}
 	}
 
-	
+	/**
+	 * Gets random integers and enters them into the answer LinkedBag to use for answer-checking purposes
+	 */
 	private static void setAnswerRandom() {
 		//Declares and sets a linked bag that holds the answer to the game.
 		answer = new LinkedBag<Integer>();
-		//Prints the answer for testing perposes
+		//Prints the answer for testing purposes
 		System.out.printf("Answer: ");
 		for(int i = 0; i < randAmnt; i++) {
 			int numberAns = rand.nextInt(Max) + 1;
@@ -79,9 +89,15 @@ public class GuessingGame {
 		System.out.printf("%n");
 	}
 	
-	
+	/**
+	 * Takes in the user's guesses until the number of integers entered == answer bag's copy's numberOfEntries
+	 * Any invalid input will ask user to enter a valid number
+	 * @param in
+	 * @param firstGuess
+	 * @param answerCopy
+	 * @return
+	 */
 	private static boolean guess(Scanner in, boolean firstGuess, LinkedBag<Integer> answerCopy) {
-		
 		//Takes in user's guesses and removes them from the copy answer.
 		for(int i = 0; i < randAmnt; i++) {
 			try {
@@ -97,7 +113,14 @@ public class GuessingGame {
 		return answerCopy.isEmpty();
 	}
 	
-	
+	/**
+	 * Method for giving an option to play the game again or not
+	 * Entering yes re-runs the game
+	 * Entering no ends the game
+	 * Entering anything else prompts the user to enter yes or no
+	 * @param in
+	 * @return
+	 */
 	private static boolean tryAgain(Scanner in) {
 		System.out.printf("You are correct! Play again? (yes, no)%n");
 		in.nextLine();
@@ -114,6 +137,50 @@ public class GuessingGame {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Getter for random amount
+	 * @return
+	 */
+	public static int getRandAmnt() {
+		return randAmnt;
+	}
+	
+	/**
+	 * Setter for randAmnt
+	 * @param input
+	 * @return
+	 */
+	public static boolean setRandAmnt(int input) {
+		boolean hasChanged = false;
+		if (input > 0) {
+			hasChanged = true;
+			randAmnt = input;
+		}
+		return hasChanged;
+	}
+	
+	/**
+	 * Getter for Max value
+	 * @return
+	 */
+	public static int getMax() {
+		return Max;
+	}
+	
+	/**
+	 * Setter for Max value
+	 * @param input
+	 * @return
+	 */
+	public static boolean setMax(int input) {
+		boolean hasChanged = false;
+		if (input > 0) {
+			hasChanged = true;
+			Max = input;
+		}
+		return hasChanged;
 	}
 	
 }
