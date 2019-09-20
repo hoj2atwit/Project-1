@@ -4,13 +4,13 @@ import java.util.Random;
 public class GuessingGame {
 	
 	
-	// Number determining the # of integers to guess - 1; +1 is added later on to ensure you don't have to guess 0 
-	private static int randAmnt;
-	// Sets a maximum range for the numbers to be guessed
-	private static int Max = 10;
-	// Random to be used for determining # of ints to be guessed and value of those ints
-	private static Random rand = new Random();
-	// LinkedBag to be used to contain the answers
+	// Number determining the # of integers to guess.
+	private static int pickAmnt;
+	// Sets a maximum range for the numbers to be guessed.
+	private static int max = 10;
+	// Random to be used for determining # of ints to be guessed and value of those ints.
+	private static Random rand;
+	// LinkedBag to be used to contain the answers.
 	private static LinkedBag<Integer> answer;
 	
 	/**
@@ -25,7 +25,8 @@ public class GuessingGame {
 	 * Actual game method that contains all game processes
 	 */
 	private static void gameStart() {
-		
+		 rand = new Random();
+		 
 		//Declares Scanner for user input
 		Scanner in = new Scanner(System.in);
 		
@@ -37,20 +38,21 @@ public class GuessingGame {
 		
 		while(doPlay) {
 			
-			//Declares random amount of numbers the game wants the user to guess.
-			randAmnt = rand.nextInt(Max) + 1;
+			//Asks user to pick how many numbers they want to guess for.
+			requestPickAmnt(in);
 			
+			//Sets a random answer.
 			setAnswerRandom();
 			
 			//Asks user for their guesses.
-			System.out.printf("Enter %d integers in the range from 1 to %d. Entries may be duplicate.%n", randAmnt, Max);
+			System.out.printf("Enter %d integers in the range from 1 to %d. Entries may be duplicate.%n", pickAmnt, max);
 			
 			//Creates a copy linked bag of the answer.
 			LinkedBag<Integer> answerCopy = answer.copy();
 			
 			//Takes user guesses. Repeats if they guess incorrectly.
 			while(!guess(in, firstGuess, answerCopy)) {
-				System.out.printf("%d of your guesses are correct.", (randAmnt - answerCopy.getCurrentSize()));
+				System.out.printf("%d of your guesses are correct.", (pickAmnt - answerCopy.getCurrentSize()));
 				if (firstGuess) {
 					System.out.printf(" Guess again.%n");
 					firstGuess = false;
@@ -72,6 +74,31 @@ public class GuessingGame {
 			
 		}
 	}
+	
+	private static void requestPickAmnt(Scanner in) {
+		String input = "";
+		int num = 0;
+		
+		//Asks user to input the amount they want to guess for.
+		System.out.printf("Enter how many numbers you would like to guess for.(1-%d) or (r for random)%n", max);
+		
+		//Keeps asking user for input if they do not input a valid number or letter.
+		while(!input.equals("r") && (num < 1 || num > max)) {
+			try {
+				num = in.nextInt();
+				while(num > max || num < 1) {
+					num = in.nextInt();
+				}
+				pickAmnt = num;
+			}catch(Exception e) {
+				input = in.nextLine();
+				if(input.equals("r")) {
+					pickAmnt = rand.nextInt(max) + 1;
+				}
+			}
+		}
+
+	}
 
 	/**
 	 * Gets random integers and enters them into the answer LinkedBag to use for answer-checking purposes
@@ -80,13 +107,13 @@ public class GuessingGame {
 		//Declares and sets a linked bag that holds the answer to the game.
 		answer = new LinkedBag<Integer>();
 		//Prints the answer for testing purposes
-		System.out.printf("Answer: ");
-		for(int i = 0; i < randAmnt; i++) {
-			int numberAns = rand.nextInt(Max) + 1;
-			System.out.printf("%d ", numberAns);
+		//System.out.printf("Answer: ");
+		for(int i = 0; i < pickAmnt; i++) {
+			int numberAns = rand.nextInt(max) + 1;
+			//System.out.printf("%d ", numberAns);
 			answer.add(numberAns);
 		}
-		System.out.printf("%n");
+		//System.out.printf("%n");
 	}
 	
 	/**
@@ -99,7 +126,7 @@ public class GuessingGame {
 	 */
 	private static boolean guess(Scanner in, boolean firstGuess, LinkedBag<Integer> answerCopy) {
 		//Takes in user's guesses and removes them from the copy answer.
-		for(int i = 0; i < randAmnt; i++) {
+		for(int i = 0; i < pickAmnt; i++) {
 			try {
 				answerCopy.remove(in.nextInt());
 			}catch(Exception e) {
@@ -109,6 +136,10 @@ public class GuessingGame {
 			}
 		}
 		
+		//Clears extra inputs if there are any.
+		if(in.hasNextLine()) {
+			in.nextLine();
+		}
 		//they are correct if the copied answer is empty
 		return answerCopy.isEmpty();
 	}
@@ -140,47 +171,41 @@ public class GuessingGame {
 	}
 	
 	/**
-	 * Getter for random amount
+	 * Getter for pick amount
 	 * @return
 	 */
-	public static int getRandAmnt() {
-		return randAmnt;
+	public static int getPickAmnt() {
+		return pickAmnt;
 	}
 	
 	/**
 	 * Setter for randAmnt
 	 * @param input
-	 * @return
 	 */
-	public static boolean setRandAmnt(int input) {
-		boolean hasChanged = false;
+	public static void setPickAmnt(int input) {
+		pickAmnt = 0;
 		if (input > 0) {
-			hasChanged = true;
-			randAmnt = input;
+			pickAmnt = input;
 		}
-		return hasChanged;
 	}
 	
 	/**
-	 * Getter for Max value
-	 * @return
+	 * Getter for max value
+	 * @return value of max
 	 */
 	public static int getMax() {
-		return Max;
+		return max;
 	}
 	
 	/**
-	 * Setter for Max value
-	 * @param input
-	 * @return
+	 * Setter for max value
+	 * @param newmax Input used to set the new max 
 	 */
-	public static boolean setMax(int input) {
-		boolean hasChanged = false;
-		if (input > 0) {
-			hasChanged = true;
-			Max = input;
+	public static void setMax(int newMax) {
+		max = 0;
+		if (newMax > 0) {
+			max = newMax;
 		}
-		return hasChanged;
 	}
 	
 }

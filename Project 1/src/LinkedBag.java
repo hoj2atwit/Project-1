@@ -79,13 +79,15 @@ public class LinkedBag<T> implements BagInterface<T> {
 	 * Removes all the nodes from the first one to the last until LinkedBag is empty
 	 */
 	public void clear() {
-		while (!isEmpty())
-			remove();
-		/**
-		 * Possible alternative:
-		 * head = null;
-		 * numberOfEntries = 0;
-		 */
+		//while (!isEmpty())
+			//remove();
+		
+		//Possible alternative:
+		head = null;
+		numberOfEntries = 0;
+		 
+		
+		
 	}
 
 	/**
@@ -211,7 +213,6 @@ public class LinkedBag<T> implements BagInterface<T> {
 
 	/**
 	 * Node class used to contain the data of LinkedBag
-	 * @author leey2, Jonny Ho
 	 */
 	private class Node {
 		// Data inside the node; Entry
