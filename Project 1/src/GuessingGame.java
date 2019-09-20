@@ -154,7 +154,6 @@ public class GuessingGame {
 	 */
 	private static boolean tryAgain(Scanner in) {
 		System.out.printf("You are correct! Play again? (yes, no)%n");
-		in.nextLine();
 		String yesNo = in.nextLine();
 		
 		//Only takes yes or no for an answer.
