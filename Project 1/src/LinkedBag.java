@@ -179,7 +179,7 @@ public class LinkedBag<T> implements BagInterface<T> {
 	 * @return LinkedBag<T> Containing all elements of this LinkedBag and input LinkedBag
 	 */
 	public LinkedBag<T> union(LinkedBag<T> other) {
-		LinkedBag<T> unionBag = new LinkedBag();
+		LinkedBag<T> unionBag = new LinkedBag<T>();
 		Node currNode;
 		for (currNode = head; currNode != null; currNode = currNode.getNext()) {
 			unionBag.add(currNode.getData());
